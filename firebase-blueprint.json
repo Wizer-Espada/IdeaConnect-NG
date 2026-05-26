@@ -1,0 +1,306 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information and bank details.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of the user" },
+        "email": { "type": "string", "description": "Email address" },
+        "about": { "type": "string", "description": "Short bio or about section" },
+        "state": { "type": "string", "description": "Nigerian State" },
+        "lga": { "type": "string", "description": "Local Government Area" },
+        "street": { "type": "string", "description": "Street address" },
+        "twitter": { "type": "string", "description": "Twitter handle" },
+        "linkedin": { "type": "string", "description": "LinkedIn profile URL" },
+        "instagram": { "type": "string", "description": "Instagram handle" },
+        "facebook": { "type": "string", "description": "Facebook profile URL" },
+        "whatsapp": { "type": "string", "description": "WhatsApp number" },
+        "isEmailVerified": { "type": "boolean", "description": "Whether the user email is verified" },
+        "kycStatus": { "type": "string", "enum": ["none", "pending", "verified", "rejected"] },
+        "latitude": { "type": "number", "description": "Latitiude coordinate" },
+        "longitude": { "type": "number", "description": "Longitude coordinate" },
+        "bank": { "type": "string", "description": "Bank name" },
+        "accountNumber": { "type": "string", "description": "10-digit account number" },
+        "accountName": { "type": "string", "description": "Name on the bank account" },
+        "avatar": { "type": "string", "description": "URL or base64 of the profile picture" },
+        "isMentor": { "type": "boolean", "description": "Whether the user is an active mentor" },
+        "mentorExpertise": { "type": "array", "description": "List of expertise areas" },
+        "mentorBio": { "type": "string", "description": "Specific bio for mentorship" },
+        "mentorAvailability": { 
+          "type": "object", 
+          "properties": {
+            "days": { "type": "array", "items": { "type": "string" } },
+            "timeSlot": { "type": "string" }
+          }
+        },
+        "notificationPreferences": {
+          "type": "object",
+          "description": "User's notification settings for different activity types",
+          "properties": {
+            "interest": { "type": "boolean" },
+            "message": { "type": "boolean" },
+            "connection": { "type": "boolean" },
+            "market": { "type": "boolean" },
+            "mentorship": { "type": "boolean" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email"]
+    },
+    "Idea": {
+      "title": "Idea",
+      "description": "Innovation concept published to the marketplace.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the idea" },
+        "category": { "type": "string", "description": "Business category" },
+        "description": { "type": "string", "description": "Detailed breakdown of the idea" },
+        "price": { "type": "string", "description": "Asking price or Free" },
+        "targetAudience": { "type": "string", "description": "Who it is for" },
+        "problemSolved": { "type": "string", "description": "Pain point addressed" },
+        "revenueModel": { "type": "string", "description": "How it makes money" },
+        "potentialImpact": { "type": "string", "description": "Scale of impact" },
+        "creatorId": { "type": "string", "description": "UID of the creator" },
+        "creatorName": { "type": "string", "description": "Name of the creator" },
+        "creatorAvatar": { "type": "string", "description": "Avatar URL of the creator" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["published", "archived"] }
+      },
+      "required": ["title", "category", "description", "creatorId"]
+    },
+    "Interest": {
+      "title": "Interest",
+      "description": "Recorded interest in an innovation concept.",
+      "type": "object",
+      "properties": {
+        "ideaId": { "type": "string", "description": "ID of the idea" },
+        "ideaTitle": { "type": "string", "description": "Title of the idea" },
+        "interestedUserId": { "type": "string", "description": "UID of the interested user" },
+        "interestedUserName": { "type": "string", "description": "Name of the interested user" },
+        "ideaOwnerId": { "type": "string", "description": "UID of the idea owner" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "responded"] }
+      },
+      "required": ["ideaId", "interestedUserId", "ideaOwnerId"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "A chat session between two users.",
+      "type": "object",
+      "properties": {
+        "participants": { "type": "array", "description": "UIDs of the two participants" },
+        "lastMessage": { "type": "string", "description": "Last message text" },
+        "lastMessageAt": { "type": "string", "format": "date-time" },
+        "unreadCount": { "type": "object", "description": "Map of UID to unread count for that user" },
+        "participantsData": { "type": "object", "description": "Map of UID to {name, avatar}" }
+      },
+      "required": ["participants"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "An individual chat message.",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string", "description": "UID of the sender" },
+        "text": { "type": "string", "description": "Message content" },
+        "fileUrl": { "type": "string", "description": "URL of the attached file" },
+        "fileType": { "type": "string", "description": "Type of the file (image, video, document)" },
+        "fileName": { "type": "string", "description": "Original name of the file" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "read": { "type": "boolean", "description": "Whether the message has been read" }
+      },
+      "required": ["senderId", "createdAt"]
+    },
+    "Connection": {
+      "title": "Connection",
+      "description": "A networking request between two users.",
+      "type": "object",
+      "properties": {
+        "fromId": { "type": "string", "description": "UID of the sender" },
+        "toId": { "type": "string", "description": "UID of the receiver" },
+        "fromName": { "type": "string", "description": "Name of the sender" },
+        "fromAvatar": { "type": "string", "description": "Avatar of the sender" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fromId", "toId", "status"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Financial record of a payment or funding.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the user" },
+        "amount": { "type": "number", "description": "Amount in NGN" },
+        "type": { "type": "string", "enum": ["funding", "payment"] },
+        "method": { "type": "string", "enum": ["card", "transfer"] },
+        "status": { "type": "string", "enum": ["pending", "success", "failed"] },
+        "reference": { "type": "string", "description": "Financial reference ID" },
+        "bankName": { "type": "string", "description": "Bank for transfer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "type", "status", "reference"]
+    },
+    "Wallet": {
+      "title": "Wallet",
+      "description": "User's current balance.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "balance": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "balance"]
+    },
+    "Roadmap": {
+      "title": "Roadmap",
+      "description": "User's progress on growth tasks.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "tasks": { 
+          "type": "array", 
+          "description": "Array of task objects with id, title, completed, and reminder" 
+        },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "tasks"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System notifications for user activities",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Recipient UID" },
+        "type": { "type": "string", "enum": ["interest", "message", "connection", "market"] },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "link": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "data": { "type": "object", "description": "Metadata for the notification" }
+      },
+      "required": ["userId", "type", "title", "message", "read", "createdAt"]
+    },
+    "MentorshipRequest": {
+      "title": "Mentorship Request",
+      "description": "A request for mentorship from one user to another.",
+      "type": "object",
+      "properties": {
+        "mentorId": { "type": "string" },
+        "menteeId": { "type": "string" },
+        "mentorName": { "type": "string" },
+        "menteeName": { "type": "string" },
+        "mentorAvatar": { "type": "string" },
+        "menteeAvatar": { "type": "string" },
+        "expertise": { "type": "string" },
+        "message": { "type": "string" },
+        "meetingType": { "type": "string", "enum": ["virtual", "in-person"] },
+        "meetingTime": { "type": "string" },
+        "meetingLink": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["mentorId", "menteeId", "status", "createdAt"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "Tracks users following other users.",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string", "description": "UID of the user who is following" },
+        "followingId": { "type": "string", "description": "UID of the user being followed" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerId", "followingId"]
+    },
+    "SavedIdea": {
+      "title": "Saved Idea",
+      "description": "Tracks bookmarks of ideas by users.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the user who saved the idea" },
+        "ideaId": { "type": "string", "description": "ID of the saved idea" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "ideaId"]
+    },
+    "KYC": {
+      "title": "KYC Data",
+      "description": "Private KYC information including NIN.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "nin": { "type": "string", "description": "11-digit National Identification Number" },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "dob": { "type": "string", "format": "date" },
+        "gender": { "type": "string" },
+        "verifiedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "nin"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Stores user profile data."
+    },
+    "/users/{userId}/private/kyc": {
+      "schema": "KYC",
+      "description": "Private KYC data for a user."
+    },
+    "/wallets/{userId}": {
+      "schema": "Wallet",
+      "description": "User balance data."
+    },
+    "/roadmaps/{userId}": {
+      "schema": "Roadmap",
+      "description": "User's roadmap progress and task reminders."
+    },
+    "/transactions/{txId}": {
+      "schema": "Transaction",
+      "description": "Financial records."
+    },
+    "/ideas/{ideaId}": {
+      "schema": "Idea",
+      "description": "Stores innovation concepts."
+    },
+    "/interests/{interestId}": {
+      "schema": "Interest",
+      "description": "Tracks users interested in ideas."
+    },
+    "/connections/{connectionId}": {
+      "schema": "Connection",
+      "description": "Tracks networking requests."
+    },
+    "/conversations/{convId}": {
+      "schema": "Conversation",
+      "description": "Chat conversations metadata."
+    },
+    "/conversations/{convId}/messages/{msgId}": {
+      "schema": "Message",
+      "description": "Individual messages in a conversation."
+    },
+    "/notifications/{notifId}": {
+      "schema": "Notification",
+      "description": "System notifications for users."
+    },
+    "/mentorship_requests/{requestId}": {
+      "schema": "MentorshipRequest",
+      "description": "Stores mentorship invitation and session status."
+    },
+    "/follows/{followId}": {
+      "schema": "Follow",
+      "description": "Tracking who follows who."
+    },
+    "/saved_ideas/{savedId}": {
+      "schema": "SavedIdea",
+      "description": "User bookmarked ideas."
+    }
+  }
+}

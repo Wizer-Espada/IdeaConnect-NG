@@ -1,0 +1,333 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Entity Validations ---
+
+    function isProfileComplete(userId) {
+      let user = get(/databases/$(database)/documents/users/$(userId)).data;
+      return user.keys().hasAll(['name', 'email', 'about', 'state', 'lga', 'street', 'bank', 'accountNumber', 'accountName'])
+        && user.name is string && user.name.size() > 0
+        && user.email is string && user.email.size() > 0
+        && user.about is string && user.about.size() > 0
+        && user.state is string && user.state.size() > 0
+        && user.lga is string && user.lga.size() > 0
+        && user.street is string && user.street.size() > 0
+        && user.bank is string && user.bank.size() > 0
+        && user.accountNumber is string && user.accountNumber.size() > 0
+        && user.accountName is string && user.accountName.size() > 0;
+    }
+
+    function isValidKYC(data) {
+      return data.keys().hasAll(['userId', 'nin'])
+        && data.userId == request.auth.uid
+        && data.nin is string && data.nin.size() == 11
+        && (!('firstName' in data) || data.firstName is string)
+        && (!('lastName' in data) || data.lastName is string)
+        && (!('verifiedAt' in data) || data.verifiedAt is timestamp);
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['name', 'email'])
+        && data.name is string && data.name.size() >= 2 && data.name.size() <= 100
+        && data.email is string && data.email.size() <= 200
+        && (!('isEmailVerified' in data) || data.isEmailVerified is bool)
+        && (!('kycStatus' in data) || data.kycStatus in ['none', 'pending', 'verified', 'rejected'])
+        && (!('about' in data) || (data.about is string && data.about.size() <= 1000))
+        && (!('state' in data) || (data.state is string && data.state.size() <= 100))
+        && (!('lga' in data) || (data.lga is string && data.lga.size() <= 100))
+        && (!('street' in data) || (data.street is string && data.street.size() <= 300))
+        && (!('address' in data) || (data.address is string && data.address.size() <= 500))
+        && (!('twitter' in data) || (data.twitter is string && data.twitter.size() <= 100))
+        && (!('linkedin' in data) || (data.linkedin is string && data.linkedin.size() <= 100))
+        && (!('instagram' in data) || (data.instagram is string && data.instagram.size() <= 100))
+        && (!('facebook' in data) || (data.facebook is string && data.facebook.size() <= 100))
+        && (!('whatsapp' in data) || (data.whatsapp is string && data.whatsapp.size() <= 100))
+        && (!('bank' in data) || (data.bank is string && data.bank.size() <= 100))
+        && (!('accountNumber' in data) || (data.accountNumber is string && data.accountNumber.size() <= 20))
+        && (!('accountName' in data) || (data.accountName is string && data.accountName.size() <= 100))
+        && (!('avatar' in data) || (data.avatar is string || data.avatar == null))
+        && (!('isMentor' in data) || (data.isMentor is bool))
+        && (!('notificationPreferences' in data) || (data.notificationPreferences is map))
+        && (!('mentorExpertise' in data) || (data.mentorExpertise is list))
+        && (!('mentorBio' in data) || (data.mentorBio is string && data.mentorBio.size() <= 2000))
+        && (!('latitude' in data) || (data.latitude is number))
+        && (!('longitude' in data) || (data.longitude is number))
+        && (!('createdAt' in data) || (data.createdAt is timestamp))
+        && (!('updatedAt' in data) || (data.updatedAt is timestamp));
+    }
+
+    function isVerifiedUser(userId) {
+      let user = get(/databases/$(database)/documents/users/$(userId)).data;
+      return user.isEmailVerified == true && user.kycStatus == 'verified';
+    }
+
+    function isValidIdea(data) {
+      return data.keys().hasAll(['title', 'category', 'description', 'creatorId'])
+        && data.title is string && data.title.size() >= 5 && data.title.size() <= 200
+        && data.category is string && data.category.size() <= 50
+        && data.description is string && data.description.size() >= 10 && data.description.size() <= 5000
+        && data.creatorId == request.auth.uid
+        && (!('price' in data) || (data.price is string && data.price.size() <= 50))
+        && (!('targetAudience' in data) || (data.targetAudience is string && data.targetAudience.size() <= 200))
+        && (!('problemSolved' in data) || (data.problemSolved is string && data.problemSolved.size() <= 200))
+        && (!('revenueModel' in data) || (data.revenueModel is string && data.revenueModel.size() <= 200))
+        && (!('potentialImpact' in data) || (data.potentialImpact is string && data.potentialImpact.size() <= 200))
+        && (!('status' in data) || (data.status in ['draft', 'published', 'sold']))
+        && (!('creatorName' in data) || (data.creatorName is string))
+        && (!('creatorAvatar' in data) || (data.creatorAvatar is string || data.creatorAvatar == null))
+        && (!('createdAt' in data) || (data.createdAt is timestamp));
+    }
+
+    function isValidInterest(data) {
+      return data.keys().hasAll(['ideaId', 'interestedUserId', 'ideaOwnerId', 'ideaTitle', 'interestedUserName'])
+        && isValidId(data.ideaId)
+        && data.interestedUserId == request.auth.uid
+        && isValidId(data.ideaOwnerId)
+        && data.ideaTitle is string
+        && data.interestedUserName is string
+        && (!('status' in data) || (data.status in ['pending', 'contacted', 'ignored']))
+        && (!('createdAt' in data) || (data.createdAt is timestamp));
+    }
+
+    function isValidConnection(data) {
+      return data.keys().hasAll(['fromId', 'toId', 'status'])
+        && data.fromId == request.auth.uid
+        && data.status in ['pending', 'accepted', 'rejected']
+        && (!('createdAt' in data) || (data.createdAt is timestamp))
+        && (!('updatedAt' in data) || (data.updatedAt is timestamp));
+    }
+
+    function isValidTransaction(data) {
+      return data.keys().hasAll(['userId', 'amount', 'type', 'status', 'reference'])
+        && data.userId == request.auth.uid
+        && data.amount is number
+        && data.type in ['funding', 'payment']
+        && data.status in ['pending', 'success', 'failed']
+        && data.reference is string
+        && (!('createdAt' in data) || (data.createdAt is timestamp));
+    }
+
+    function isValidWallet(data) {
+      return data.keys().hasAll(['userId', 'balance'])
+        && data.userId == request.auth.uid
+        && data.balance is number
+        && (!('updatedAt' in data) || (data.updatedAt is timestamp));
+    }
+
+    function isValidRoadmap(data) {
+      return data.keys().hasAll(['userId', 'tasks'])
+        && data.userId == request.auth.uid
+        && data.tasks is list
+        && data.tasks.size() <= 20
+        && (!('updatedAt' in data) || (data.updatedAt is timestamp));
+    }
+
+    function isValidNotification(data) {
+      return data.keys().hasAll(['userId', 'type', 'title', 'message', 'read', 'createdAt'])
+        && data.userId is string
+        && data.type in ['interest', 'message', 'connection', 'market', 'mentorship']
+        && data.title is string && data.title.size() <= 100
+        && data.message is string && data.message.size() <= 500
+        && data.read is bool
+        && data.createdAt == request.time;
+    }
+
+    function isValidMessage(data) {
+      return data.keys().hasAll(['senderId', 'createdAt'])
+        && data.senderId is string
+        && (('text' in data && data.text is string && data.text.size() > 0) || ('fileUrl' in data && data.fileUrl is string && data.fileUrl.size() > 0))
+        && (!('text' in data) || (data.text.size() <= 5000))
+        && (!('fileUrl' in data) || (data.fileUrl.size() <= 2000))
+        && (!('fileType' in data) || (data.fileType is string && data.fileType.size() <= 100))
+        && (!('fileName' in data) || (data.fileName is string && data.fileName.size() <= 500))
+        && (data.createdAt == request.time || data.createdAt is timestamp)
+        && (!('read' in data) || (data.read is bool));
+    }
+
+    function isValidMentorshipRequest(data) {
+      return data.keys().hasAll(['mentorId', 'menteeId', 'status', 'createdAt'])
+        && isValidId(data.mentorId)
+        && data.menteeId == request.auth.uid
+        && data.status in ['pending', 'accepted', 'declined', 'completed']
+        && (!('mentorName' in data) || (data.mentorName is string))
+        && (!('menteeName' in data) || (data.menteeName is string))
+        && (!('mentorAvatar' in data) || (data.mentorAvatar is string || data.mentorAvatar == null))
+        && (!('menteeAvatar' in data) || (data.menteeAvatar is string || data.menteeAvatar == null))
+        && (!('expertise' in data) || (data.expertise is string))
+        && (!('message' in data) || (data.message is string && data.message.size() <= 1000))
+        && (!('meetingType' in data) || (data.meetingType in ['virtual', 'in-person']))
+        && (!('meetingTime' in data) || (data.meetingTime is string))
+        && (!('meetingLink' in data) || (data.meetingLink is string && data.meetingLink.size() <= 1000))
+        && (!('createdAt' in data) || (data.createdAt is timestamp))
+        && (!('updatedAt' in data) || (data.updatedAt is timestamp));
+    }
+
+    function isValidFollow(data) {
+      return data.keys().hasAll(['followerId', 'followingId'])
+        && data.followerId == request.auth.uid
+        && isValidId(data.followingId)
+        && (!('createdAt' in data) || (data.createdAt is timestamp));
+    }
+
+    function isValidSavedIdea(data) {
+      return data.keys().hasAll(['userId', 'ideaId'])
+        && data.userId == request.auth.uid
+        && isValidId(data.ideaId)
+        && (!('createdAt' in data) || (data.createdAt is timestamp));
+    }
+
+    // --- Collection Matches ---
+
+    match /notifications/{notifId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidNotification(incoming());
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid 
+        && incoming().diff(existing()).affectedKeys().hasOnly(['read']);
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn(); // Allow reading profile for connection
+      allow list: if isSignedIn(); // Allow discovery for networking
+      
+      allow create: if isOwner(userId) && isValidUser(incoming()) && incoming().email == request.auth.token.email;
+      allow update: if isOwner(userId) && (
+        // Action: Sync verification status
+        (incoming().diff(existing()).affectedKeys().hasOnly(['isEmailVerified']) && incoming().isEmailVerified == request.auth.token.email_verified) ||
+        // Action: Update profile
+        (isValidUser(incoming()) && (
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'name', 'about', 'state', 'lga', 'street', 'address', 'twitter', 'linkedin', 'instagram', 
+            'bank', 'accountNumber', 'accountName', 'avatar', 'updatedAt', 'latitude', 'longitude', 'facebook', 'whatsapp',
+            'isMentor', 'mentorExpertise', 'mentorBio', 'mentorAvailability', 'notificationPreferences',
+            'isEmailVerified', 'kycStatus' 
+          ])
+        ))
+      );
+
+      match /private/kyc {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidKYC(incoming());
+      }
+    }
+
+    match /roadmaps/{uid} {
+      allow read: if isSignedIn() && uid == request.auth.uid;
+      allow create, update: if isSignedIn() && uid == request.auth.uid && isValidRoadmap(incoming());
+    }
+
+    match /conversations/{convId} {
+      allow read: if isSignedIn() && (resource == null || request.auth.uid in resource.data.participants);
+      allow create: if isSignedIn() && request.auth.uid in request.resource.data.participants 
+        && request.resource.data.participants.size() == 2;
+      allow update: if isSignedIn() && request.auth.uid in resource.data.participants
+        && incoming().diff(existing()).affectedKeys().hasOnly(['lastMessage', 'lastMessageAt', 'participantsData', 'unreadCount']);
+      
+      match /messages/{msgId} {
+        allow read, list: if isSignedIn() && request.auth.uid in get(/databases/$(database)/documents/conversations/$(convId)).data.participants;
+        allow create: if isSignedIn() && request.auth.uid in get(/databases/$(database)/documents/conversations/$(convId)).data.participants
+          && incoming().senderId == request.auth.uid;
+        allow update: if isSignedIn() && request.auth.uid in get(/databases/$(database)/documents/conversations/$(convId)).data.participants
+          && incoming().diff(existing()).affectedKeys().hasOnly(['read']);
+      }
+    }
+
+    match /ideas/{ideaId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isProfileComplete(request.auth.uid) && isValidIdea(incoming()) && isValidId(ideaId);
+      allow update: if isSignedIn() && existing().creatorId == request.auth.uid && isValidIdea(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'title', 'category', 'description', 'price', 'targetAudience', 
+          'problemSolved', 'revenueModel', 'potentialImpact', 'status'
+        ])
+      );
+      allow delete: if isSignedIn() && existing().creatorId == request.auth.uid;
+    }
+
+    match /interests/{interestId} {
+      allow read: if isSignedIn() && (
+        resource.data.interestedUserId == request.auth.uid || 
+        resource.data.ideaOwnerId == request.auth.uid
+      );
+      allow create: if isSignedIn() && isValidInterest(incoming()) && isValidId(interestId);
+      allow update: if isSignedIn() && resource.data.ideaOwnerId == request.auth.uid && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['status'])
+      );
+      allow delete: if isSignedIn() && resource.data.interestedUserId == request.auth.uid;
+    }
+
+    match /connections/{connId} {
+      allow read: if isSignedIn() && (
+        resource.data.fromId == request.auth.uid || 
+        resource.data.toId == request.auth.uid || 
+        resource.data.status == 'accepted'
+      );
+      allow create: if isSignedIn() && isValidConnection(incoming()) && isValidId(connId);
+      allow update: if isSignedIn() && (
+        (resource.data.toId == request.auth.uid && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])) ||
+        (resource.data.fromId == request.auth.uid && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']))
+      );
+      allow delete: if isSignedIn() && (resource.data.fromId == request.auth.uid || resource.data.toId == request.auth.uid);
+    }
+
+    match /wallets/{userId} {
+      allow read: if isSignedIn() && userId == request.auth.uid;
+      allow create, update: if isSignedIn() && userId == request.auth.uid && isValidWallet(incoming());
+    }
+
+    match /transactions/{txId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidTransaction(incoming()) && isValidId(txId);
+      // Transactions are generally immutable for users
+      allow update, delete: if false; 
+    }
+
+    match /mentorship_requests/{requestId} {
+      allow read: if isSignedIn() && (resource.data.mentorId == request.auth.uid || resource.data.menteeId == request.auth.uid);
+      allow create: if isSignedIn() && isValidMentorshipRequest(incoming()) && isValidId(requestId);
+      allow update: if isSignedIn() && (
+        (resource.data.mentorId == request.auth.uid && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt', 'meetingLink'])) ||
+        (resource.data.menteeId == request.auth.uid && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt', 'message']))
+      );
+      allow delete: if isSignedIn() && (resource.data.mentorId == request.auth.uid || resource.data.menteeId == request.auth.uid);
+    }
+
+    match /follows/{followId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidFollow(incoming()) && isValidId(followId);
+      allow delete: if isSignedIn() && resource.data.followerId == request.auth.uid;
+    }
+
+    match /saved_ideas/{savedId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidSavedIdea(incoming()) && isValidId(savedId);
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}
