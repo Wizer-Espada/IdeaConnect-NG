@@ -109,7 +109,12 @@ import {
   Calendar,
   UserPlus,
   UserCheck,
-  PlayCircle
+  PlayCircle,
+  Trophy,
+  Award,
+  Crown,
+  Sparkles,
+  Gift
 } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'motion/react';
 
@@ -847,23 +852,23 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', onSuccess }: AuthMo
               </AnimatePresence>
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-accent-dark ml-1">Email Address</label>
+                <label className="text-sm font-bold text-accent-dark dark:text-gray-200 ml-1">Email Address</label>
                 <div className="relative group">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-primary transition-colors" />
                   <input 
                     type="email" 
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@example.com"
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-950 dark:text-white rounded-2xl focus:bg-white dark:focus:bg-gray-750 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 font-medium"
                   />
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center ml-1">
-                  <label className="text-sm font-bold text-accent-dark">Password</label>
+                  <label className="text-sm font-bold text-accent-dark dark:text-gray-200">Password</label>
                   {mode === 'login' && (
                     <button type="button" onClick={() => setMode('forgot')} className="text-xs font-bold text-primary hover:underline">
                       Forgot Password?
@@ -871,19 +876,19 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', onSuccess }: AuthMo
                   )}
                 </div>
                 <div className="relative group">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-primary transition-colors" />
                   <input 
                     type={showPassword ? "text" : "password"} 
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-950 dark:text-white rounded-2xl focus:bg-white dark:focus:bg-gray-750 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 font-medium"
                   />
                   <button 
                     type="button" 
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-accent-dark transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-accent-dark dark:hover:text-gray-250 transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -910,22 +915,22 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', onSuccess }: AuthMo
               {mode === 'register' && (
                 <>
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-accent-dark ml-1">Confirm Password</label>
+                    <label className="text-sm font-bold text-accent-dark dark:text-gray-200 ml-1">Confirm Password</label>
                     <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors" />
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-primary transition-colors" />
                       <input 
                         type={showPassword ? "text" : "password"} 
                         required
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Retype your password"
-                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-950 dark:text-white rounded-2xl focus:bg-white dark:focus:bg-gray-750 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 font-medium"
                       />
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                  <div className="flex items-start gap-3 bg-gray-50/50 p-4 rounded-2xl border border-gray-100 dark:bg-gray-800/30 dark:border-gray-800">
                     <input type="checkbox" id="terms" required className="mt-1 w-4 h-4 accent-primary cursor-pointer" />
-                    <label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer">
+                    <label htmlFor="terms" className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed cursor-pointer">
                       I agree to IdeaConnect NG's <a href="#" className="text-primary font-bold hover:underline">Terms of Service</a> and confirm I am over 18 years of age.
                     </label>
                   </div>
@@ -1132,18 +1137,6 @@ const DashboardSidebar = ({
           </div>
         </button>
 
-        <button 
-          onClick={toggleDarkMode}
-          className="flex items-center justify-between w-full px-4 py-3 mb-2 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all group"
-        >
-           <div className="flex items-center gap-3">
-             {isDarkMode ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-primary" />}
-             <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Appearance</span>
-           </div>
-           <div className={`w-10 h-5 rounded-full relative transition-colors ${isDarkMode ? 'bg-primary' : 'bg-gray-300'}`}>
-             <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${isDarkMode ? 'left-6' : 'left-1'}`} />
-           </div>
-        </button>
         <div className="bg-primary/5 dark:bg-primary/10 rounded-2xl p-4 mb-4 relative overflow-hidden group">
           <div className="absolute -top-4 -right-4 w-12 h-12 bg-primary/10 rounded-full group-hover:scale-150 transition-transform" />
           <p className="text-xs font-bold text-primary mb-1">PRO PLAN</p>
@@ -1656,222 +1649,758 @@ const DashboardStatCard = ({ label, value, trend, icon: Icon, color }: any) => (
   </div>
 );
 
-const ProfileView = ({ profile, completenessScore, userIdeas, acceptedConnections }: { profile: any, completenessScore: number, userIdeas: any[], acceptedConnections: any[] }) => {
+const ProfileView = ({ 
+  profile, 
+  completenessScore, 
+  userIdeas, 
+  acceptedConnections,
+  addToast,
+  onUpdateProfile
+}: { 
+  profile: any, 
+  completenessScore: number, 
+  userIdeas: any[], 
+  acceptedConnections: any[],
+  addToast: (m: string, t?: 'success' | 'error') => void,
+  onUpdateProfile: (p: any) => void
+}) => {
+  const [profileSubTab, setProfileSubTab] = useState<'profile' | 'rewards'>('profile');
+
+  // Load user details
+  const currentClaimed = useMemo(() => profile.claimedRewards || [], [profile.claimedRewards]);
+  const userXp = useMemo(() => profile.xp || 100, [profile.xp]);
+  
+  // Calculate level
+  const levelVal = Math.floor(userXp / 500) + 1;
+  const currentLevelXp = userXp % 500;
+  
+  const levelTitle = useMemo(() => {
+    if (levelVal === 1) return 'Rising Innovator ⚡';
+    if (levelVal === 2) return 'Ecosystem Catalyst 🔥';
+    if (levelVal === 3) return 'Visionary Architect 🏆';
+    return 'Sovereign Pioneer 👑';
+  }, [levelVal]);
+
+  // Quests/Milestones setup
+  const MILESTONES = useMemo(() => [
+    {
+      id: 'profile_full',
+      title: 'Profile Perfectionist',
+      description: 'Complete 100% of your account profile details to build trust.',
+      requirement: 'Reach 100% Profile Completeness',
+      award: 150,
+      icon: ShieldCheck,
+      isMet: completenessScore >= 100,
+      progress: completenessScore,
+      target: 100,
+      suffix: '%'
+    },
+    {
+      id: 'first_concept',
+      title: 'Prototype Pioneer',
+      description: 'Publish your first innovation concept on the IdeaConnect NG hub.',
+      requirement: 'Publish 1 Concept',
+      award: 100,
+      icon: Lightbulb,
+      isMet: userIdeas.length >= 1,
+      progress: userIdeas.length,
+      target: 1,
+      suffix: ''
+    },
+    {
+      id: 'multi_concepts',
+      title: 'Visionary Architect',
+      description: 'Establish a diverse conceptual portfolio by publishing 3 ideas.',
+      requirement: 'Publish 3 Concepts',
+      award: 350,
+      icon: Crown,
+      isMet: userIdeas.length >= 3,
+      progress: userIdeas.length,
+      target: 3,
+      suffix: ''
+    },
+    {
+      id: 'first_connection',
+      title: 'Synergy Catalyst',
+      description: 'Secure your first accepted networking connection request.',
+      requirement: 'Make 1 Connection',
+      award: 50,
+      icon: Sparkles,
+      isMet: acceptedConnections.length >= 1,
+      progress: acceptedConnections.length,
+      target: 1,
+      suffix: ''
+    },
+    {
+      id: 'multi_connections',
+      title: 'Ecosystem Builder',
+      description: 'Grow your network by securing 5 or more connections.',
+      requirement: 'Make 5 Connections',
+      award: 250,
+      icon: Users,
+      isMet: acceptedConnections.length >= 5,
+      progress: acceptedConnections.length,
+      target: 5,
+      suffix: ''
+    },
+    {
+      id: 'kyc_verified',
+      title: 'Approved Partner',
+      description: 'Validate your national identity KYC status successfully.',
+      requirement: 'Verify Identity via KYC',
+      award: 300,
+      icon: CheckCircle,
+      isMet: profile.kycStatus === 'verified',
+      progress: profile.kycStatus === 'verified' ? 1 : 0,
+      target: 1,
+      suffix: ''
+    },
+    {
+      id: 'bank_setup',
+      title: 'Remit Ready',
+      description: 'Link settlement bank account credentials to accept remittances.',
+      requirement: 'Configure Remittance Info',
+      award: 100,
+      icon: CreditCard,
+      isMet: !!(profile.bank && profile.accountNumber),
+      progress: (profile.bank && profile.accountNumber) ? 1 : 0,
+      target: 1,
+      suffix: ''
+    }
+  ], [completenessScore, userIdeas.length, acceptedConnections.length, profile.kycStatus, profile.bank, profile.accountNumber]);
+
+  // Unclaimed count for notification bubbles
+  const unclaimedCount = useMemo(() => {
+    return MILESTONES.filter(m => m.isMet && !currentClaimed.includes(m.id)).length;
+  }, [MILESTONES, currentClaimed]);
+
+  // Daily bonus calculations
+  const lastDailyBonus = profile.lastDailyBonusTime || 0;
+  const cooldownPeriod = 24 * 60 * 60 * 1000;
+  const [now, setNow] = useState(Date.now());
+  const isDailyCheckInAvailable = useMemo(() => {
+    return (now - lastDailyBonus) >= cooldownPeriod;
+  }, [now, lastDailyBonus]);
+
+  const [timeRemainingStr, setTimeRemainingStr] = useState('');
+
+  // Tick for countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (isDailyCheckInAvailable) {
+      setTimeRemainingStr('');
+      return;
+    }
+    const timeLeft = cooldownPeriod - (now - lastDailyBonus);
+    if (timeLeft <= 0) {
+      setTimeRemainingStr('');
+    } else {
+      const h = Math.floor(timeLeft / (60 * 60 * 1000));
+      const m = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+      const s = Math.floor((timeLeft % (60 * 1000)) / 1000);
+      setTimeRemainingStr(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
+    }
+  }, [now, lastDailyBonus, isDailyCheckInAvailable]);
+
+  // Handle milestone claims
+  const claimMilestone = async (id: string, award: number) => {
+    if (!auth.currentUser) return;
+    if (currentClaimed.includes(id)) return;
+    
+    const updatedClaimed = [...currentClaimed, id];
+    const updatedXp = (profile.xp || 100) + award;
+    
+    const updatedProfile = {
+      ...profile,
+      xp: updatedXp,
+      claimedRewards: updatedClaimed
+    };
+    
+    try {
+      await setDoc(doc(db, 'users', auth.currentUser.uid), updatedProfile, { merge: true });
+      localStorage.setItem(`profile_${auth.currentUser.email}`, JSON.stringify(updatedProfile));
+      onUpdateProfile(updatedProfile);
+      addToast(`Milestone claimed! Conferred +${award} XP points! 🏆`, "success");
+    } catch (error) {
+      console.error("Failed to claim milestone", error);
+      addToast("Failed to claim award. Please try again.", "error");
+    }
+  };
+
+  // Handle Daily Check-In
+  const handleClaimDailyCheckIn = async () => {
+    if (!isDailyCheckInAvailable || !auth.currentUser) return;
+    
+    const updatedXp = (profile.xp || 100) + 50;
+    const updatedProfile = {
+      ...profile,
+      xp: updatedXp,
+      lastDailyBonusTime: Date.now()
+    };
+    
+    try {
+      await setDoc(doc(db, 'users', auth.currentUser.uid), updatedProfile, { merge: true });
+      localStorage.setItem(`profile_${auth.currentUser.email}`, JSON.stringify(updatedProfile));
+      onUpdateProfile(updatedProfile);
+      addToast("Daily check-in complete! Sparked +50 XP! ⚡", "success");
+    } catch (error) {
+      console.error("Check-In failed:", error);
+      addToast("Failed to check in. Please try again.", "error");
+    }
+  };
+
+  // Badge list maps
+  const BADGES = useMemo(() => [
+    {
+      id: 'novice_pioneer',
+      title: 'Ecosystem Pioneer',
+      subtitle: 'Joined the Innovators Hub',
+      icon: Sparkles,
+      gradient: 'from-amber-400 to-orange-500 shadow-orange-500/20',
+      isUnlocked: true,
+      desc: 'Granted to all certified registered users of IdeaConnect NG.'
+    },
+    {
+      id: 'profile_full',
+      title: 'Trust Architect',
+      subtitle: '100% Profile Completeness',
+      icon: ShieldCheck,
+      gradient: 'from-emerald-400 to-teal-500 shadow-emerald-500/20',
+      isUnlocked: completenessScore >= 100,
+      desc: 'Verify accountability and identity transparency with detailed records.'
+    },
+    {
+      id: 'first_concept',
+      title: 'Prototype Alchemist',
+      subtitle: '1 concept published',
+      icon: Lightbulb,
+      gradient: 'from-blue-400 to-indigo-500 shadow-blue-500/20',
+      isUnlocked: userIdeas.length >= 1,
+      desc: 'Catalyzed initial vision by listing a design concept in the index.'
+    },
+    {
+      id: 'multi_concepts',
+      title: 'Visionary Monarch',
+      subtitle: '3+ concepts shared',
+      icon: Crown,
+      gradient: 'from-violet-500 to-fuchsia-500 shadow-fuchsia-500/20',
+      isUnlocked: userIdeas.length >= 3,
+      desc: 'Contributed multiple scalable designs to empower regional artisans.'
+    },
+    {
+      id: 'first_connection',
+      title: 'Synergy Catalyst',
+      subtitle: 'First connection made',
+      icon: Users,
+      gradient: 'from-pink-500 to-rose-500 shadow-rose-500/20',
+      isUnlocked: acceptedConnections.length >= 1,
+      desc: 'Broke isolation thresholds by securing active mentor or partner bonds.'
+    },
+    {
+      id: 'multi_connections',
+      title: 'Ecosystem Architect',
+      subtitle: '5+ network partners',
+      icon: Trophy,
+      gradient: 'from-yellow-400 to-amber-600 shadow-yellow-600/20',
+      isUnlocked: acceptedConnections.length >= 5,
+      desc: 'Maintained deep, trusted lines of cross-functional industrial sync.'
+    },
+    {
+      id: 'kyc_verified',
+      title: 'Vetted Innovator',
+      subtitle: 'KYC verified credentials',
+      icon: CheckCircle,
+      gradient: 'from-teal-400 to-cyan-500 shadow-teal-500/20',
+      isUnlocked: profile.kycStatus === 'verified',
+      desc: 'Authenticated by government credentials to secure legal partnerships.'
+    },
+    {
+      id: 'bank_setup',
+      title: 'Capital Catalyst',
+      subtitle: 'Payout details configured',
+      icon: CreditCard,
+      gradient: 'from-rose-500 to-purple-600 shadow-purple-600/20',
+      isUnlocked: !!(profile.bank && profile.accountNumber),
+      desc: 'Empowered automatic digital USSD and bank remittance pathways.'
+    }
+  ], [completenessScore, userIdeas.length, acceptedConnections.length, profile.kycStatus, profile.bank, profile.accountNumber]);
+
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto space-y-8 pb-12">
-      {/* Header Profile Card */}
-      <div className="bg-white dark:bg-gray-900 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 p-8 md:p-12 shadow-sm relative overflow-hidden transition-colors">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
-        
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-10 relative z-10">
-          <div className="relative group">
-            <div className="w-40 h-40 rounded-[2rem] bg-secondary overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl">
-              {profile.avatar ? (
-                <img src={profile.avatar} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-5xl font-black text-primary">
-                  {profile.name.substring(0, 2).toUpperCase()}
-                </div>
-              )}
-            </div>
-            {completenessScore === 100 && (
-              <div className="absolute -bottom-2 -right-2 bg-emerald-500 text-white p-2 rounded-xl shadow-lg ring-4 ring-white dark:ring-gray-900 animate-bounce">
-                <CheckCircle className="w-5 h-5" />
-              </div>
-            )}
-          </div>
-
-          <div className="flex-1 text-center md:text-left space-y-4">
-            <div className="space-y-1">
-              <h2 className="text-3xl md:text-4xl font-black text-accent-dark dark:text-gray-100 tracking-tight">{profile.name}</h2>
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-gray-500">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4 text-primary" />
-                  {profile.street ? `${profile.street}, ` : ''}{profile.lga}, {profile.state}
-                </span>
-                <span className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
-                <span className="flex items-center gap-1 uppercase font-black tracking-widest text-[10px] text-primary">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  Verified Innovator
-                </span>
-              </div>
-            </div>
-
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl font-medium">
-              {profile.about}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
-              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                <Users className="w-4 h-4 text-primary" />
-                <span className="text-sm font-black text-accent-dark dark:text-gray-200">{acceptedConnections.length} Connections</span>
-              </div>
-              {profile.twitter && (
-                <a href={`https://twitter.com/${profile.twitter}`} target="_blank" rel="noreferrer" className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
-                  <Twitter className="w-5 h-5" />
-                </a>
-              )}
-              {profile.linkedin && (
-                <a href={profile.linkedin} target="_blank" rel="noreferrer" className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
-                  <Linkedin className="w-5 h-5" />
-                </a>
-              )}
-              {profile.instagram && (
-                <a href={`https://instagram.com/${profile.instagram}`} target="_blank" rel="noreferrer" className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
-                  <Instagram className="w-5 h-5" />
-                </a>
-              )}
-              {profile.facebook && (
-                <a href={profile.facebook} target="_blank" rel="noreferrer" className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
-                  <Facebook className="w-5 h-5" />
-                </a>
-              )}
-              {profile.whatsapp && (
-                <a href={`https://wa.me/${profile.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="p-3 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 rounded-xl hover:bg-emerald-100 transition-all">
-                  <MessageCircle className="w-5 h-5" />
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Details */}
-        <div className="space-y-8">
-          {/* My Network Preview */}
-          <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 transition-colors">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-black text-accent-dark dark:text-gray-100 flex items-center gap-2">
-                <Users className="w-5 h-5 text-indigo-500" />
-                My Network
-              </h3>
-              <span className="text-xs font-bold text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded-lg">
-                {acceptedConnections.length}
-              </span>
-            </div>
-            
-            <div className="space-y-4">
-              {acceptedConnections.length > 0 ? (
-                acceptedConnections.slice(0, 5).map((conn, idx) => (
-                  <div key={idx} className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-transparent hover:border-primary/10 transition-all">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-700 flex items-center justify-center font-bold text-primary overflow-hidden border border-gray-100 dark:border-gray-600 shadow-sm">
-                      {conn.otherUser.avatar ? (
-                        <img src={conn.otherUser.avatar} className="w-full h-full object-cover" />
-                      ) : (
-                        conn.otherUser.name?.substring(0, 2).toUpperCase()
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="font-bold text-accent-dark dark:text-gray-200 text-xs truncate">{conn.otherUser.name}</p>
-                      <p className="text-[10px] text-gray-500 truncate">{conn.otherUser.state || 'Innovator'}</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-8">
-                  <p className="text-xs text-gray-400 italic">Network is empty yet</p>
-                </div>
-              )}
-              {acceptedConnections.length > 5 && (
-                <button 
-                  className="w-full py-3 text-[10px] font-black text-primary uppercase tracking-widest hover:bg-primary/5 rounded-xl transition-all"
-                >
-                  View All Connections
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Trust Score */}
-          <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 transition-colors">
-            <h4 className="font-bold text-accent-dark dark:text-gray-200 mb-4 flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-emerald-500" />
-              Account Verification
-            </h4>
-            <div className="space-y-4">
-              <div className="flex justify-between text-xs font-black uppercase tracking-widest text-emerald-600">
-                <span>Profile Completeness</span>
-                <span>{completenessScore}%</span>
-              </div>
-              <div className="h-2 bg-emerald-100 dark:bg-emerald-950 rounded-full overflow-hidden">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: `${completenessScore}%` }}
-                  className="h-full bg-emerald-500 rounded-full"
-                />
-              </div>
-              <p className="text-[10px] text-gray-400 leading-relaxed italic">
-                A 100% score indicates a trusted identity on the marketplace.
-              </p>
-            </div>
-          </div>
-
-          {/* Payment Status */}
-          <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 transition-colors">
-            <h4 className="font-bold text-accent-dark dark:text-gray-200 mb-4 flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-indigo-500" />
-              Remittance Info
-            </h4>
-            <div className="space-y-3">
-              <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-transparent">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Settlement Bank</p>
-                <p className="text-sm font-bold text-accent-dark dark:text-gray-200">{profile.bank || 'Not Configured'}</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-transparent">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Account Number</p>
-                <p className="text-sm font-mono font-bold text-accent-dark dark:text-gray-200 tracking-[0.2em]">
-                  {profile.accountNumber ? `****${profile.accountNumber.slice(-4)}` : '••••••••••'}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Published Ideas */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-accent-dark dark:text-gray-100 flex items-center gap-2">
-              <Lightbulb className="w-6 h-6 text-primary" />
-              Published Innovation Concepts
-            </h3>
-            <span className="bg-primary/10 text-primary text-[10px] font-black px-3 py-1 rounded-full uppercase">
-              {userIdeas.length} Total
+      
+      {/* Dynamic Sub-Tab Selector for Rewards Hub */}
+      <div className="flex bg-gray-100 dark:bg-gray-800 p-1.5 rounded-2xl max-w-sm mx-auto shadow-inner">
+        <button 
+          onClick={() => setProfileSubTab('profile')}
+          className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${profileSubTab === 'profile' ? 'bg-white dark:bg-gray-750 text-primary dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300'}`}
+        >
+          <User className="w-4 h-4" />
+          My Profile
+        </button>
+        <button 
+          onClick={() => setProfileSubTab('rewards')}
+          className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 relative ${profileSubTab === 'rewards' ? 'bg-white dark:bg-gray-750 text-amber-500 dark:text-amber-400 shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300'}`}
+        >
+          <Trophy className="w-4 h-4 text-amber-500" />
+          Rewards & Badges
+          {unclaimedCount > 0 && (
+            <span className="absolute -top-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-rose-500 text-[9px] font-black text-white ring-2 ring-white dark:ring-gray-800">
+              {unclaimedCount}
             </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {userIdeas.length > 0 ? (
-              userIdeas.map(idea => (
-                <div key={idea.id} className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 transition-all hover:shadow-xl hover:shadow-primary/5 group">
-                  <div className="flex justify-between items-start mb-4">
-                    <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${getCategoryColor(idea.category)}`}>
-                      {idea.category}
-                    </span>
-                    <p className="text-xs font-black text-primary">₦{idea.price}</p>
-                  </div>
-                  <h4 className="font-bold text-accent-dark dark:text-gray-100 mb-2 group-hover:text-primary transition-colors line-clamp-1">{idea.title}</h4>
-                  <p className="text-xs text-gray-500 line-clamp-2 mb-4">{idea.description}</p>
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                    <Users className="w-3.5 h-3.5" />
-                    <span>{Math.floor(Math.random() * 20)} Interested</span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="col-span-full py-20 bg-gray-50 dark:bg-gray-800/50 rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-gray-800 flex flex-col items-center justify-center text-center px-10">
-                <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-[1.5rem] shadow-xl flex items-center justify-center mb-6">
-                  <Zap className="w-8 h-8 text-primary" />
-                </div>
-                <h4 className="font-bold text-accent-dark dark:text-gray-100 text-lg mb-2">No Concepts Published Yet</h4>
-                <p className="text-xs text-gray-500 max-w-xs leading-relaxed">
-                  Start sharing your innovative ideas with the world and attract investors or collaborators.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+          )}
+        </button>
       </div>
+
+      <AnimatePresence mode="wait">
+        {profileSubTab === 'profile' ? (
+          <motion.div 
+            key="profile-details"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.15 }}
+            className="space-y-8"
+          >
+            {/* Header Profile Card */}
+            <div className="bg-white dark:bg-gray-900 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 p-8 md:p-12 shadow-sm relative overflow-hidden transition-colors">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl animate-pulse" />
+              
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-10 relative z-10">
+                <div className="relative group">
+                  <div className="w-40 h-40 rounded-[2rem] bg-secondary overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl">
+                    {profile.avatar ? (
+                      <img src={profile.avatar} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-5xl font-black text-primary">
+                        {profile.name.substring(0, 2).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                  {completenessScore === 100 && (
+                    <div className="absolute -bottom-2 -right-2 bg-emerald-500 text-white p-2 rounded-xl shadow-lg ring-4 ring-white dark:ring-gray-900 animate-bounce">
+                      <CheckCircle className="w-5 h-5" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-1 text-center md:text-left space-y-4">
+                  <div className="space-y-1">
+                    <h2 className="text-3xl md:text-4xl font-black text-accent-dark dark:text-gray-100 tracking-tight">{profile.name}</h2>
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4 text-primary" />
+                        {profile.street ? `${profile.street}, ` : ''}{profile.lga}, {profile.state}
+                      </span>
+                      <span className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
+                      <div className="flex items-center gap-1.5">
+                        <span className="flex items-center gap-1 uppercase font-black tracking-widest text-[10px] text-primary">
+                          <ShieldCheck className="w-3.5 h-3.5" />
+                          Verified Innovator
+                        </span>
+                        <span className="text-xs bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold px-2 py-0.5 rounded-full">
+                          Lvl {levelVal}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl font-medium">
+                    {profile.about}
+                  </p>
+
+                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                      <Users className="w-4 h-4 text-primary" />
+                      <span className="text-sm font-black text-accent-dark dark:text-gray-200">{acceptedConnections.length} Connections</span>
+                    </div>
+                    {profile.twitter && (
+                      <a href={`https://twitter.com/${profile.twitter}`} target="_blank" rel="noreferrer" className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
+                        <Twitter className="w-5 h-5" />
+                      </a>
+                    )}
+                    {profile.linkedin && (
+                      <a href={profile.linkedin} target="_blank" rel="noreferrer" className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
+                        <Linkedin className="w-5 h-5" />
+                      </a>
+                    )}
+                    {profile.instagram && (
+                      <a href={`https://instagram.com/${profile.instagram}`} target="_blank" rel="noreferrer" className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
+                        <Instagram className="w-5 h-5" />
+                      </a>
+                    )}
+                    {profile.facebook && (
+                      <a href={profile.facebook} target="_blank" rel="noreferrer" className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
+                        <Facebook className="w-5 h-5" />
+                      </a>
+                    )}
+                    {profile.whatsapp && (
+                      <a href={`https://wa.me/${profile.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="p-3 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 rounded-xl hover:bg-emerald-100 transition-all">
+                        <MessageCircle className="w-5 h-5" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Left Column: Details */}
+              <div className="space-y-8">
+                {/* My Network Preview */}
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 transition-colors">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-black text-accent-dark dark:text-gray-100 flex items-center gap-2">
+                      <Users className="w-5 h-5 text-indigo-500" />
+                      My Network
+                    </h3>
+                    <span className="text-xs font-bold text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded-lg">
+                      {acceptedConnections.length}
+                    </span>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {acceptedConnections.length > 0 ? (
+                      acceptedConnections.slice(0, 5).map((conn, idx) => (
+                        <div key={idx} className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-transparent hover:border-primary/10 transition-all">
+                          <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-700 flex items-center justify-center font-bold text-primary overflow-hidden border border-gray-100 dark:border-gray-600 shadow-sm">
+                            {conn.otherUser.avatar ? (
+                              <img src={conn.otherUser.avatar} className="w-full h-full object-cover" />
+                            ) : (
+                              conn.otherUser.name?.substring(0, 2).toUpperCase()
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="font-bold text-accent-dark dark:text-gray-200 text-xs truncate">{conn.otherUser.name}</p>
+                            <p className="text-[10px] text-gray-500 truncate">{conn.otherUser.state || 'Innovator'}</p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-8">
+                        <p className="text-xs text-gray-400 italic">Network is empty yet</p>
+                      </div>
+                    )}
+                    {acceptedConnections.length > 5 && (
+                      <button 
+                        className="w-full py-3 text-[10px] font-black text-primary uppercase tracking-widest hover:bg-primary/5 rounded-xl transition-all"
+                      >
+                        View All Connections
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Trust Score */}
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 transition-colors">
+                  <h4 className="font-bold text-accent-dark dark:text-gray-200 mb-4 flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-emerald-500" />
+                    Account Verification
+                  </h4>
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-xs font-black uppercase tracking-widest text-emerald-600">
+                      <span>Profile Completeness</span>
+                      <span>{completenessScore}%</span>
+                    </div>
+                    <div className="h-2 bg-emerald-100 dark:bg-emerald-950 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${completenessScore}%` }}
+                        className="h-full bg-emerald-500 rounded-full"
+                      />
+                    </div>
+                    <p className="text-[10px] text-gray-400 leading-relaxed italic">
+                      A 100% score indicates a trusted identity on the marketplace.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Payment Status */}
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 transition-colors">
+                  <h4 className="font-bold text-accent-dark dark:text-gray-200 mb-4 flex items-center gap-2">
+                    <CreditCard className="w-5 h-5 text-indigo-500" />
+                    Remittance Info
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-transparent">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Settlement Bank</p>
+                      <p className="text-sm font-bold text-accent-dark dark:text-gray-200">{profile.bank || 'Not Configured'}</p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-transparent">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Account Number</p>
+                      <p className="text-sm font-mono font-bold text-accent-dark dark:text-gray-200 tracking-[0.2em]">
+                        {profile.accountNumber ? `****${profile.accountNumber.slice(-4)}` : '••••••••••'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Published Ideas */}
+              <div className="lg:col-span-2 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-accent-dark dark:text-gray-100 flex items-center gap-2">
+                    <Lightbulb className="w-6 h-6 text-primary" />
+                    Published Innovation Concepts
+                  </h3>
+                  <span className="bg-primary/10 text-primary text-[10px] font-black px-3 py-1 rounded-full uppercase">
+                    {userIdeas.length} Total
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {userIdeas.length > 0 ? (
+                    userIdeas.map(idea => (
+                      <div key={idea.id} className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 transition-all hover:shadow-xl hover:shadow-primary/5 group">
+                        <div className="flex justify-between items-start mb-4">
+                          <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${getCategoryColor(idea.category)}`}>
+                            {idea.category}
+                          </span>
+                          <p className="text-xs font-black text-primary">₦{idea.price}</p>
+                        </div>
+                        <h4 className="font-bold text-accent-dark dark:text-gray-100 mb-2 group-hover:text-primary transition-colors line-clamp-1">{idea.title}</h4>
+                        <p className="text-xs text-gray-500 line-clamp-2 mb-4">{idea.description}</p>
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          <Users className="w-3.5 h-3.5" />
+                          <span>{Math.floor(Math.random() * 20)} Interested</span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="col-span-full py-20 bg-gray-50 dark:bg-gray-800/50 rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-gray-800 flex flex-col items-center justify-center text-center px-10">
+                      <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-[1.5rem] shadow-xl flex items-center justify-center mb-6">
+                        <Zap className="w-8 h-8 text-primary" />
+                      </div>
+                      <h4 className="font-bold text-accent-dark dark:text-gray-100 text-lg mb-2">No Concepts Published Yet</h4>
+                      <p className="text-xs text-gray-500 max-w-xs leading-relaxed">
+                        Start sharing your innovative ideas with the world and attract investors or collaborators.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            key="rewards-hub"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.15 }}
+            className="space-y-8"
+          >
+            {/* Gamified Level Progress and Daily Bonus Hub */}
+            <div className="bg-white dark:bg-gray-900 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 p-8 md:p-10 shadow-sm relative overflow-hidden transition-colors">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+              
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-10 relative z-10">
+                <div className="space-y-6 text-center lg:text-left flex-1 w-full">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                    <div className="p-4 bg-amber-500/10 text-amber-500 rounded-3xl shrink-0">
+                      <Trophy className="w-10 h-10" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Innovator Reputation Rank</p>
+                      <h3 className="text-2xl sm:text-3xl font-black text-accent-dark dark:text-gray-100 tracking-tight">{levelTitle}</h3>
+                      <p className="text-xs text-gray-500 mt-1">Total Accumulated Capital XP: <span className="font-black text-primary text-sm">{userXp} XP</span></p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2.5 max-w-xl mx-auto lg:mx-0">
+                    <div className="flex justify-between text-xs font-black uppercase tracking-wider text-gray-400">
+                      <span>Progress to Level {levelVal + 1}</span>
+                      <span>{currentLevelXp} / 500 XP</span>
+                    </div>
+                    <div className="h-4 bg-gray-100 dark:bg-gray-800 p-0.5 rounded-full border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(currentLevelXp / 500) * 100}%` }}
+                        className="h-full bg-gradient-to-r from-amber-500 via-primary to-indigo-600 rounded-full"
+                      />
+                    </div>
+                    <div className="flex justify-between items-center text-[10px] text-gray-400 font-bold">
+                      <span>Level {levelVal} ({500 * (levelVal - 1)} XP)</span>
+                      <span className="italic">Earn {500 - currentLevelXp} XP to level up</span>
+                      <span>Level {levelVal + 1} ({500 * levelVal} XP)</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Daily Check-In Sub Card */}
+                <div className="w-full lg:w-80 bg-gray-50/55 dark:bg-gray-800/40 rounded-[2rem] border border-gray-100/50 dark:border-gray-800/70 p-6 flex flex-col items-center justify-center text-center">
+                  <div className="p-3 bg-rose-500/10 text-rose-500 dark:text-rose-400 rounded-2xl mb-3">
+                    <Gift className="w-7 h-7 animate-pulse" />
+                  </div>
+                  <h4 className="font-black text-accent-dark dark:text-gray-100 text-sm mb-1">Daily Check-In Reward</h4>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs leading-relaxed mb-4">
+                    Earn free points. Build check-in streaks daily to maximize ecosystem rewards!
+                  </p>
+                  
+                  {isDailyCheckInAvailable ? (
+                    <button
+                      onClick={handleClaimDailyCheckIn}
+                      className="w-full py-3 bg-gradient-to-r from-primary to-violet-600 hover:from-primary-dark hover:to-violet-700 text-white text-xs font-black uppercase tracking-wider rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+                    >
+                      CLAIM +50 XP
+                    </button>
+                  ) : (
+                    <button
+                      disabled
+                      className="w-full py-3 bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500 text-xs font-black uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 cursor-not-allowed"
+                    >
+                      <Clock className="w-4 h-4 animate-spin text-gray-400" />
+                      Unlocked in {timeRemainingStr || '24h'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Left Column (2-Span): Challenges / Quests */}
+              <div className="lg:col-span-2 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-black text-accent-dark dark:text-gray-100 flex items-center gap-2">
+                    <Target className="w-5 h-5 text-primary" />
+                    Ecosystem Quests & Milestones
+                  </h3>
+                  <span className="text-xs font-bold text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full uppercase">
+                    {MILESTONES.filter(m => m.isMet).length} / {MILESTONES.length} Done
+                  </span>
+                </div>
+
+                <div className="space-y-4">
+                  {MILESTONES.map((quest) => {
+                    const isClaimed = currentClaimed.includes(quest.id);
+                    const isUnlockable = quest.isMet && !isClaimed;
+                    const IconComp = quest.icon;
+                    
+                    return (
+                      <div 
+                        key={quest.id}
+                        className={`p-5 rounded-3xl border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${isClaimed ? 'bg-gray-50/50 dark:bg-gray-900/30 border-gray-100 dark:border-gray-850/35 opacity-75' : isUnlockable ? 'bg-white dark:bg-gray-900 border-amber-200 dark:border-amber-900/40 shadow-md shadow-amber-500/5 ring-2 ring-amber-500/10' : 'bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800'}`}
+                      >
+                        <div className="flex items-start gap-4 flex-1">
+                          <div className={`p-3 rounded-2xl shrink-0 ${isClaimed ? 'bg-gray-100 dark:bg-gray-850 text-gray-400' : isUnlockable ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-500' : 'bg-slate-50 dark:bg-gray-850 text-slate-500 dark:text-gray-400'}`}>
+                            <IconComp className="w-6 h-6" />
+                          </div>
+                          
+                          <div className="space-y-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="font-bold text-sm text-accent-dark dark:text-gray-100 leading-snug">{quest.title}</h4>
+                              <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-widest ${isClaimed ? 'bg-gray-150 text-gray-400 dark:bg-gray-800' : 'bg-primary/10 text-primary'}`}>
+                                +{quest.award} XP
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium leading-relaxed">{quest.description}</p>
+                            
+                            {/* Mission Progress Indicator */}
+                            <div className="pt-2 flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                              <span>Progress:</span>
+                              <div className="w-24 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div 
+                                  className={`h-full rounded-full ${isClaimed ? 'bg-gray-400' : isUnlockable ? 'bg-amber-500' : 'bg-primary'}`}
+                                  style={{ width: `${Math.min((quest.progress / quest.target) * 100, 100)}%` }}
+                                />
+                              </div>
+                              <span className={quest.isMet ? 'text-emerald-500 font-black' : 'text-gray-400'}>
+                                {quest.progress}{quest.suffix} / {quest.target}{quest.suffix}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Action claim button */}
+                        <div className="w-full sm:w-auto shrink-0 flex items-center justify-end">
+                          {isClaimed ? (
+                            <span className="flex items-center gap-1.5 px-4 py-2 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 font-bold text-xs rounded-xl uppercase tracking-wider">
+                              <CheckCircle className="w-4 h-4" />
+                              Claimed
+                            </span>
+                          ) : isUnlockable ? (
+                            <button
+                              onClick={() => claimMilestone(quest.id, quest.award)}
+                              className="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xs rounded-xl uppercase tracking-wider shadow hover:brightness-110 active:scale-95 transition-all text-center"
+                            >
+                              Claim Reward
+                            </button>
+                          ) : (
+                            <span className="flex items-center gap-1.5 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 font-bold text-xs rounded-xl uppercase tracking-wider">
+                              <Lock className="w-3.5 h-3.5" />
+                              Locked
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Right Column (1-Span): Badges Showcase */}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-black text-accent-dark dark:text-gray-100 flex items-center gap-2">
+                    <Award className="w-5 h-5 text-emerald-500" />
+                    Insignia Cabinet
+                  </h3>
+                  <p className="text-xs text-gray-400 font-medium leading-relaxed mt-1">
+                    Your dynamic visual tokens. Unlocked by actual ecosystem contributions.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 space-y-5 transition-colors">
+                  <div className="grid grid-cols-2 gap-4">
+                    {BADGES.map((badge) => {
+                      const BIcon = badge.icon;
+                      return (
+                        <div 
+                          key={badge.id}
+                          className="group relative flex flex-col items-center justify-center text-center p-4 rounded-2xl bg-gray-50/50 dark:bg-gray-850 border border-transparent hover:border-primary/15 transition-all outline-none"
+                          title={badge.desc}
+                        >
+                          {/* Round 3D Badge Frame */}
+                          <div className={`w-14 h-14 rounded-full flex items-center justify-center relative mb-2.5 transition-transform group-hover:scale-110 ${badge.isUnlocked ? `bg-gradient-to-br ${badge.gradient} text-white shadow-xl` : 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600'}`}>
+                            <BIcon className="w-6 h-6 relative z-10" />
+                            
+                            {!badge.isUnlocked && (
+                              <div className="absolute inset-0 bg-gray-950/25 rounded-full flex items-center justify-center">
+                                <Lock className="w-4 h-4 text-white/90" />
+                              </div>
+                            )}
+
+                            {/* Inner ring */}
+                            <div className="absolute inset-1 border-2 border-white/25 rounded-full" />
+                          </div>
+
+                          <span className={`text-[10px] font-extrabold truncate w-full ${badge.isUnlocked ? 'text-accent-dark dark:text-gray-100' : 'text-gray-400'}`}>
+                            {badge.title}
+                          </span>
+                          <span className="text-[8px] text-gray-500 truncate w-full mt-0.5 leading-none">
+                            {badge.isUnlocked ? badge.subtitle : 'Locked'}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  
+                  <div className="pt-2 border-t border-gray-100 dark:border-gray-800 text-center">
+                    <p className="text-[10px] text-gray-400 italic font-medium leading-relaxed">
+                      💡 Hover over (or click) any badge to recall its unlocking requirements.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
@@ -2839,8 +3368,30 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Load draft when active conversation changes
+  useEffect(() => {
+    if (!currentUser) return;
+    if (activeConvId) {
+      const savedDraft = localStorage.getItem(`chat_draft_${currentUser.uid}_${activeConvId}`);
+      setMessageText(savedDraft || '');
+    } else {
+      setMessageText('');
+    }
+  }, [activeConvId, currentUser?.uid]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleMessageTextChange = (text: string) => {
+    setMessageText(text);
+    if (currentUser && activeConvId) {
+      if (text.trim()) {
+        localStorage.setItem(`chat_draft_${currentUser.uid}_${activeConvId}`, text);
+      } else {
+        localStorage.removeItem(`chat_draft_${currentUser.uid}_${activeConvId}`);
+      }
+    }
   };
 
   const handleFileSelect = (file: File) => {
@@ -2883,6 +3434,9 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
 
     setSendingMessages(prev => [...prev, optimisticMsg]);
     setMessageText('');
+    if (currentUser && activeConvId) {
+      localStorage.removeItem(`chat_draft_${currentUser.uid}_${activeConvId}`);
+    }
     setPendingFile(null);
     setPendingFilePreview(null);
     setIsSending(true);
@@ -3105,12 +3659,47 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
   const filteredUsers = allUsers.filter(u => u.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-[2rem] md:rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-sm h-[calc(100vh-10rem)] md:h-[calc(100vh-12rem)] flex overflow-hidden transition-all relative">
-      {/* Sidebar */}
-      <div className={`
-        ${isMobileView ? (showChatOnMobile ? 'hidden' : 'w-full') : 'w-80'} 
-        border-r border-gray-50 dark:border-gray-800 flex flex-col bg-gray-50/50 dark:bg-gray-950/20 z-10
-      `}>
+    <div className="bg-white dark:bg-gray-900 rounded-[1.2rem] sm:rounded-[2rem] md:rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-sm h-[calc(100dvh-4.6rem)] sm:h-[calc(100dvh-6.5rem)] md:h-[calc(100vh-12rem)] flex flex-col overflow-hidden transition-all relative">
+      {/* Mobile Selector Tab bar to show all areas prominent and wide */}
+      {isMobileView && (
+        <div className="bg-gray-50/50 dark:bg-gray-950/30 p-4 border-b border-gray-100 dark:border-gray-800 shrink-0">
+          <div className="flex bg-gray-100/80 dark:bg-gray-800/60 p-1  rounded-2xl border border-gray-200/50 dark:border-gray-700 justify-between gap-1 shadow-inner">
+            <button 
+              onClick={() => { setShowChatOnMobile(false); setShowDiscover(false); }}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${!showChatOnMobile && !showDiscover ? 'bg-white dark:bg-gray-700 text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Inbox</span>
+              {conversations.some(c => (c.unreadCount?.[currentUser?.uid] || 0) > 0) && (
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+              )}
+            </button>
+            <button 
+              onClick={() => { setShowChatOnMobile(false); setShowDiscover(true); }}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${!showChatOnMobile && showDiscover ? 'bg-white dark:bg-gray-700 text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Discover</span>
+            </button>
+            <button 
+              disabled={!activeConvId}
+              onClick={() => { setShowChatOnMobile(true); }}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${showChatOnMobile ? 'bg-white dark:bg-gray-700 text-primary shadow-sm' : 'text-gray-400 disabled:opacity-45 dark:text-gray-500'}`}
+            >
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>Active Chat</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Dual Component Panel Row */}
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* Sidebar */}
+        <div className={`
+          ${isMobileView ? (showChatOnMobile ? 'hidden' : 'w-full') : 'w-80'} 
+          border-r border-gray-50 dark:border-gray-800 flex flex-col bg-gray-50/50 dark:bg-gray-950/20 z-10
+        `}>
         <div className="p-6 border-b border-gray-50 dark:border-gray-800 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-black text-accent-dark dark:text-gray-100 uppercase tracking-widest text-[10px]">Inbox</h3>
@@ -3166,6 +3755,7 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
                 const pData = conv.participantsData?.[partId];
                 const isActive = activeConvId === conv.id;
                 const unreadCount = conv.unreadCount?.[currentUser?.uid] || 0;
+                const draftText = localStorage.getItem(`chat_draft_${currentUser?.uid}_${conv.id}`);
                 return (
                   <button 
                     key={conv.id}
@@ -3182,7 +3772,16 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
                         <span className="text-[10px] text-gray-400 font-bold">{conv.lastMessageAt?.toDate ? new Date(conv.lastMessageAt.toDate()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</span>
                       </div>
                       <div className="flex items-center justify-between gap-2">
-                        <p className={`text-xs truncate font-medium ${unreadCount > 0 ? 'text-accent-dark dark:text-gray-100 font-bold' : 'text-gray-400 dark:text-gray-500'}`}>{conv.lastMessage}</p>
+                        <p className={`text-xs truncate font-medium ${unreadCount > 0 ? 'text-accent-dark dark:text-gray-100 font-bold' : 'text-gray-400 dark:text-gray-500'}`}>
+                          {draftText ? (
+                            <span className="text-amber-600 dark:text-amber-400 font-medium">
+                              <span className="font-extrabold uppercase tracking-widest text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400 px-1 py-0.5 rounded mr-1.5 align-middle">Draft</span>
+                              <span className="italic">{draftText}</span>
+                            </span>
+                          ) : (
+                            conv.lastMessage
+                          )}
+                        </p>
                         {unreadCount > 0 && (
                           <span className="h-4 min-w-[1rem] px-1 bg-rose-500 text-white text-[8px] font-black rounded-full flex items-center justify-center">
                             {unreadCount}
@@ -3234,7 +3833,7 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
             </div>
 
             <div 
-              className="flex-1 p-8 overflow-y-auto space-y-6 custom-scrollbar bg-gray-50/10 dark:bg-gray-950/20 relative"
+              className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto space-y-4 sm:space-y-6 custom-scrollbar bg-gray-50/10 dark:bg-gray-950/20 relative"
               onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
               onDrop={(e) => {
                 e.preventDefault();
@@ -3312,7 +3911,7 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-6 border-t border-gray-50 dark:border-gray-800">
+            <div className="p-4 sm:p-6 border-t border-gray-50 dark:border-gray-800">
               <input 
                 type="file" 
                 className="hidden" 
@@ -3387,7 +3986,7 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
                 </button>
                 <input 
                   value={messageText}
-                  onChange={(e) => setMessageText(e.target.value)}
+                  onChange={(e) => handleMessageTextChange(e.target.value)}
                   placeholder={pendingFile ? "Add a caption..." : "Type your message..."}
                   className="flex-1 bg-transparent border-none py-3 text-sm outline-none dark:text-gray-200 font-medium"
                 />
@@ -3402,17 +4001,34 @@ const MessagesView = ({ addToast, currentUser, profile, initialUser, onChatStart
             </div>
           </>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center p-12 text-center">
+          <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-center h-full">
             <div className="w-20 h-20 bg-primary/5 rounded-[2rem] flex items-center justify-center mb-6">
               <MessageSquare className="w-10 h-10 text-primary/40" />
             </div>
-            <h3 className="text-xl font-bold text-accent-dark dark:text-gray-100 mb-2">Private Messaging</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs">
-              Connect with fellow innovators to start a real-time conversation.
+            <h3 className="text-xl font-bold text-accent-dark dark:text-gray-100 mb-2">No Active Chat</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mb-8">
+              Choose an active collaboration from the Inbox or find great minds on the Discover tab.
             </p>
+            {isMobileView && (
+              <div className="flex flex-col gap-3 w-full max-w-xs">
+                <button 
+                  onClick={() => { setShowChatOnMobile(false); setShowDiscover(false); }}
+                  className="w-full py-3 bg-primary text-white font-black rounded-2xl shadow-lg shadow-primary/10 hover:bg-primary-dark transition-all text-xs uppercase tracking-wider"
+                >
+                  Browse Inbox
+                </button>
+                <button 
+                  onClick={() => { setShowChatOnMobile(false); setShowDiscover(true); }}
+                  className="w-full py-3 bg-primary/10 text-primary font-black rounded-2xl hover:bg-primary/20 transition-all text-xs uppercase tracking-wider"
+                >
+                  Discover Creators
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
+      </div> {/* Close the Main Dual Component Panel Row */}
     </div>
   );
 };
@@ -5424,7 +6040,16 @@ const Dashboard = ({ user, ideas, onAddIdea, onLogout, addToast, isDarkMode, tog
           </motion.div>
         );
       case 'profile':
-        return <ProfileView profile={profile} completenessScore={completenessScore} userIdeas={userIdeas} acceptedConnections={acceptedConnections} />;
+        return (
+          <ProfileView 
+            profile={profile} 
+            completenessScore={completenessScore} 
+            userIdeas={userIdeas} 
+            acceptedConnections={acceptedConnections} 
+            addToast={addToast}
+            onUpdateProfile={(updatedProfile) => setProfile(updatedProfile)}
+          />
+        );
       case 'post-concept':
         return <PostConceptView 
           addToast={addToast} 
@@ -6471,8 +7096,8 @@ const Dashboard = ({ user, ideas, onAddIdea, onLogout, addToast, isDarkMode, tog
       </header>
 
         {/* Dashboard Content */}
-        <div className="p-8 max-w-7xl mx-auto">
-          {profile.kycStatus === 'verified' ? null : (
+        <div className={`${activeTab === 'messages' ? 'p-0 sm:p-4 md:p-8' : 'p-4 sm:p-8'} max-w-7xl mx-auto`}>
+          {profile.kycStatus === 'verified' || activeTab === 'messages' ? null : (
             <KYCBanner onVerifyClick={() => setIsKYCModalOpen(true)} />
           )}
           {renderTabContent()}
@@ -6596,8 +7221,6 @@ const Navbar = ({ onOpenAuth, isDarkMode, toggleDarkMode }: NavbarProps) => {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          <ThemeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-          
           <button className={`p-2 rounded-full transition-colors ${isScrolled ? 'text-accent-dark dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800' : 'text-white hover:bg-white/10'}`}>
             <Bell className="w-5 h-5" />
           </button>
@@ -6618,7 +7241,6 @@ const Navbar = ({ onOpenAuth, isDarkMode, toggleDarkMode }: NavbarProps) => {
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 md:hidden">
-          <ThemeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
           <button 
             className="p-2 text-current"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -7109,7 +7731,8 @@ const VerificationScreen = ({ user, onLogout, onRefresh, addToast }: { user: any
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('theme');
-    return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (saved) return saved === 'dark';
+    return true; // Default to dark mode on first load
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
